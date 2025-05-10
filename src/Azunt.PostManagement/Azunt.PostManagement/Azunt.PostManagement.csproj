@@ -11,7 +11,6 @@
         <Folder Include="02_Contracts\" />
         <Folder Include="03_Repositories\" />
         <Folder Include="04_Extensions\" />
-        <Folder Include="05_Enhancers\" />
     </ItemGroup>
 
     <ItemGroup>

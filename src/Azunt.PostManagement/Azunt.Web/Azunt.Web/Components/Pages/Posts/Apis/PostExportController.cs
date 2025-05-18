@@ -6,30 +6,26 @@ using Azunt.PostManagement;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
-using System.IO;
 
 namespace Azunt.Apis.Posts
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PostDownloadController : ControllerBase
+    public class PostExportController : ControllerBase
     {
         private readonly IPostRepository _postRepository;
-        //private readonly IPostStorageService _storageService;
 
-        public PostDownloadController(IPostRepository postRepository 
-            /*IPostStorageService storageService*/)
+        public PostExportController(IPostRepository postRepository)
         {
             _postRepository = postRepository;
-            //_storageService = storageService;
         }
 
         /// <summary>
         /// 게시글 목록 엑셀 다운로드
-        /// GET /api/PostDownload/ExcelDown
+        /// GET /api/PostExport/Excel
         /// </summary>
-        [HttpGet("ExcelDown")]
-        public async Task<IActionResult> ExcelDown()
+        [HttpGet("Excel")]
+        public async Task<IActionResult> ExportToExcel()
         {
             var items = await _postRepository.GetAllAsync();
 
@@ -68,27 +64,5 @@ namespace Azunt.Apis.Posts
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 $"{DateTime.Now:yyyyMMddHHmmss}_Posts.xlsx");
         }
-
-        ///// <summary>
-        ///// 게시글 첨부파일 다운로드
-        ///// GET /api/PostDownload/{fileName}
-        ///// </summary>
-        //[HttpGet("{fileName}")]
-        //public async Task<IActionResult> Download(string fileName)
-        //{
-        //    try
-        //    {
-        //        var stream = await _storageService.DownloadAsync(fileName);
-        //        return File(stream, "application/octet-stream", fileName);
-        //    }
-        //    catch (FileNotFoundException)
-        //    {
-        //        return NotFound($"File not found: {fileName}");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, $"Download error: {ex.Message}");
-        //    }
-        //}
     }
 }

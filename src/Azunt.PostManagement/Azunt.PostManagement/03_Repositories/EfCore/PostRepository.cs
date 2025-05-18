@@ -1,11 +1,6 @@
 ﻿using Azunt.Models.Common;
-using Azunt.PostManagement;
-using Azunt.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Azunt.PostManagement;
 
@@ -107,7 +102,7 @@ public class PostRepository : IPostRepository
         return await context.SaveChangesAsync() > 0;
     }
 
-    public async Task<Azunt.Models.Common.ArticleSet<Post, int>> GetAllAsync<TParentIdentifier>(
+    public async Task<ArticleSet<Post, int>> GetAllAsync<TParentIdentifier>(
         int pageIndex,
         int pageSize,
         string searchField,
@@ -146,7 +141,7 @@ public class PostRepository : IPostRepository
             .Take(pageSize)
             .ToListAsync();
 
-        return new Azunt.Models.Common.ArticleSet<Post, int>(items, totalCount);
+        return new ArticleSet<Post, int>(items, totalCount);
     }
 
     public async Task<bool> MoveUpAsync(long id)

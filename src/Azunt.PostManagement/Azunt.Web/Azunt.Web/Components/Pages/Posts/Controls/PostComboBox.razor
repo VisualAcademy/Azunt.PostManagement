@@ -2,9 +2,8 @@
 @using Azunt.PostManagement
 @inject IPostRepository PostRepository
 
-<div>
-    <!-- 드롭다운 리스트 -->
-    <select class="form-control mb-2" @onchange="OnSelectChanged">
+<div class="d-flex align-items-center">
+    <select class="form-control" style="width: 250px;" @onchange="OnSelectChanged">
         <option value="">-- Select a Post --</option>
         @foreach (var post in PostList)
         {
@@ -14,9 +13,10 @@
         }
     </select>
 
-    <!-- 직접 입력용 텍스트박스: 필요없으면 제거 -->
-    <!-- 텍스트박스 입력 시에도 SelectedPostChanged 호출 -->
+    <span class="mx-2 text-muted">or</span>
+
     <input class="form-control" type="text" placeholder="Or type a new post..."
+           style="width: 250px;"
            @bind="SelectedPost"
            @oninput="OnInputChanged" />
 </div>

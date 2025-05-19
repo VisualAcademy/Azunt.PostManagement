@@ -23,14 +23,14 @@ namespace Azunt.Web.Components.Pages.Posts.Services
             }
         }
 
-        public async Task<string> UploadAsync(Stream postStream, string postName)
+        public async Task<string> UploadAsync(Stream stream, string fileName)
         {
-            string safeFileName = GetUniqueFileName(postName);
+            string safeFileName = GetUniqueFileName(fileName);
             string fullPath = Path.Combine(_rootPath, safeFileName);
 
             using (var fileStream = File.Create(fullPath))
             {
-                await postStream.CopyToAsync(fileStream);
+                await stream.CopyToAsync(fileStream);
             }
 
             // 웹 접근 가능한 상대 경로 반환
@@ -53,20 +53,20 @@ namespace Azunt.Web.Components.Pages.Posts.Services
             return newFileName;
         }
 
-        public Task<Stream> DownloadAsync(string postName)
+        public Task<Stream> DownloadAsync(string fileName)
         {
-            string fullPath = Path.Combine(_rootPath, postName);
+            string fullPath = Path.Combine(_rootPath, fileName);
 
             if (!File.Exists(fullPath))
-                throw new FileNotFoundException($"Post not found: {postName}");
+                throw new FileNotFoundException($"Post not found: {fileName}");
 
             var stream = File.OpenRead(fullPath);
             return Task.FromResult<Stream>(stream);
         }
 
-        public Task DeleteAsync(string postName)
+        public Task DeleteAsync(string fileName)
         {
-            string fullPath = Path.Combine(_rootPath, postName);
+            string fullPath = Path.Combine(_rootPath, fileName);
 
             if (File.Exists(fullPath))
             {

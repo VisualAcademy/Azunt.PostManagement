@@ -24,19 +24,19 @@ namespace Azunt.Web.Components.Pages.Posts.Services
             _containerClient.CreateIfNotExists();
         }
 
-        public async Task<string> UploadAsync(Stream postStream, string postName)
+        public async Task<string> UploadAsync(Stream stream, string fileName)
         {
-            if (string.IsNullOrWhiteSpace(postName))
-                throw new ArgumentException("File name cannot be empty.", nameof(postName));
+            if (string.IsNullOrWhiteSpace(fileName))
+                throw new ArgumentException("File name cannot be empty.", nameof(fileName));
 
             // 중복 방지를 위해 고유 파일명 생성
-            string safeFileName = await GetUniqueFileNameAsync(postName);
+            string safeFileName = await GetUniqueFileNameAsync(fileName);
 
             // URL 인코딩 (업로드 직전에 한 번만)
             string encodedFileName = WebUtility.UrlEncode(safeFileName);
 
             var blobClient = _containerClient.GetBlobClient(encodedFileName);
-            await blobClient.UploadAsync(postStream, overwrite: true);
+            await blobClient.UploadAsync(stream, overwrite: true);
 
             return blobClient.Uri.ToString(); // 전체 URL 반환
         }
@@ -58,29 +58,29 @@ namespace Azunt.Web.Components.Pages.Posts.Services
             return newFileName;
         }
 
-        public async Task<Stream> DownloadAsync(string postName)
+        public async Task<Stream> DownloadAsync(string fileName)
         {
-            if (string.IsNullOrWhiteSpace(postName))
-                throw new ArgumentException("File name cannot be empty.", nameof(postName));
+            if (string.IsNullOrWhiteSpace(fileName))
+                throw new ArgumentException("File name cannot be empty.", nameof(fileName));
 
             // URL 디코딩
-            string decodedFileName = WebUtility.UrlDecode(postName);
+            string decodedFileName = WebUtility.UrlDecode(fileName);
 
             var blobClient = _containerClient.GetBlobClient(decodedFileName);
 
             if (!await blobClient.ExistsAsync())
-                throw new FileNotFoundException($"Post file not found: {postName}");
+                throw new FileNotFoundException($"Post file not found: {fileName}");
 
             var response = await blobClient.DownloadAsync();
             return response.Value.Content;
         }
 
-        public async Task DeleteAsync(string postName)
+        public async Task DeleteAsync(string fileName)
         {
-            if (string.IsNullOrWhiteSpace(postName))
-                throw new ArgumentException("File name cannot be empty.", nameof(postName));
+            if (string.IsNullOrWhiteSpace(fileName))
+                throw new ArgumentException("File name cannot be empty.", nameof(fileName));
 
-            string decodedFileName = WebUtility.UrlDecode(postName);
+            string decodedFileName = WebUtility.UrlDecode(fileName);
             var blobClient = _containerClient.GetBlobClient(decodedFileName);
 
             await blobClient.DeleteIfExistsAsync();

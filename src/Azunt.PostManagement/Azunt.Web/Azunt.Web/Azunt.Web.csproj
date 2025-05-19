@@ -28,7 +28,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Components\Pages\Posts\Controls\" />
       <Folder Include="wwwroot\files\posts\" />
     </ItemGroup>
 

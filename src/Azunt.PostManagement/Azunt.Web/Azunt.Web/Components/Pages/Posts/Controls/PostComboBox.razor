@@ -1,0 +1,58 @@
+﻿@namespace Azunt.Web.Components.Pages.Posts.Controls
+@using Azunt.PostManagement
+@inject IPostRepository PostRepository
+
+<div>
+    <!-- 드롭다운 리스트 -->
+    <select class="form-control mb-2" @onchange="OnSelectChanged">
+        <option value="">-- Select a Post --</option>
+        @foreach (var post in PostList)
+        {
+            <option value="@post" selected="@(post == SelectedPost)">
+                @post
+            </option>
+        }
+    </select>
+
+    <!-- 직접 입력용 텍스트박스: 필요없으면 제거 -->
+    <!-- 텍스트박스 입력 시에도 SelectedPostChanged 호출 -->
+    <input class="form-control" type="text" placeholder="Or type a new post..."
+           @bind="SelectedPost"
+           @oninput="OnInputChanged" />
+</div>
+
+@code {
+    [Parameter]
+    public string SelectedPost { get; set; } = "";
+
+    [Parameter]
+    public EventCallback<string> SelectedPostChanged { get; set; }
+
+    private List<string> PostList { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var posts = await PostRepository.GetAllAsync();
+        PostList = posts
+            .Select(d => d.Name ?? "")
+            .Where(n => !string.IsNullOrWhiteSpace(n))
+            .Distinct()
+            .ToList();
+    }
+
+    private async Task OnSelectChanged(ChangeEventArgs e)
+    {
+        var selected = e.Value?.ToString();
+        if (!string.IsNullOrWhiteSpace(selected))
+        {
+            SelectedPost = selected;
+            await SelectedPostChanged.InvokeAsync(SelectedPost);
+        }
+    }
+
+    private async Task OnInputChanged(ChangeEventArgs e)
+    {
+        SelectedPost = e.Value?.ToString() ?? "";
+        await SelectedPostChanged.InvokeAsync(SelectedPost);
+    }
+}

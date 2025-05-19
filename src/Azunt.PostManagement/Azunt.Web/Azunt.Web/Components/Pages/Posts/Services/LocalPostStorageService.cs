@@ -34,7 +34,7 @@ namespace Azunt.Web.Components.Pages.Posts.Services
             }
 
             // 웹 접근 가능한 상대 경로 반환
-            return $"/fiels/posts/{safeFileName}";
+            return $"/files/posts/{safeFileName}";
         }
 
         private string GetUniqueFileName(string originalName)

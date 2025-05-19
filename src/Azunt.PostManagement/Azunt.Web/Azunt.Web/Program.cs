@@ -5,7 +5,8 @@ using Azunt.Web.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Azunt.PostManagement; // 네임스페이스 임포트
+using Azunt.PostManagement;
+using Azunt.Web.Components.Pages.Posts.Services; // 네임스페이스 임포트
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,8 +46,7 @@ var defaultConnStr = builder.Configuration.GetConnectionString("DefaultConnectio
 
 builder.Services.AddDependencyInjectionContainerForPostApp(defaultConnStr);
 builder.Services.AddTransient<PostDbContextFactory>();
-builder.Services.AddScoped<IPostStorageService,
-    Azunt.Web.Components.Pages.Posts.Services.AzureBlobStorageService>();
+builder.Services.AddScoped<IPostStorageService, LocalPostStorageService>();
 
 var app = builder.Build();
 

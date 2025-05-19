@@ -40,7 +40,7 @@ namespace Azunt.Apis.Posts
                 {
                     m.Id,
                     m.Name,
-                    m.Title,
+                    Title = m.Title ?? "", // null 처리
                     m.Category,
                     Created = m.Created.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"),
                     m.CreatedBy

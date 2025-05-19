@@ -9,8 +9,8 @@ namespace Azunt.Web.Components.Pages.Posts.Services
 {
     public class LocalPostStorageService : IPostStorageService
     {
-        private readonly string _container = "files";           // Root container 디렉터리
-        private readonly string _subFolder;                     // 실제 서브 폴더
+        private readonly string _container = "files";
+        private readonly string _subFolder;
         private readonly string _rootPath;
         private readonly ILogger<LocalPostStorageService> _logger;
 

@@ -11,7 +11,7 @@ namespace Azunt.Web.Components.Pages.Posts.Services
     public class AzureBlobStorageService : IPostStorageService
     {
         private readonly BlobContainerClient _containerClient;
-        private readonly string _subFolder; // 고정된 서브폴더 이름
+        private readonly string _subFolder;
 
         public AzureBlobStorageService(IConfiguration config, string subFolder = "posts")
         {
@@ -38,7 +38,7 @@ namespace Azunt.Web.Components.Pages.Posts.Services
             var blobClient = _containerClient.GetBlobClient(blobPath);
             await blobClient.UploadAsync(stream, overwrite: true);
 
-            return safeFileName; // blobClient.Uri.ToString(); // 전체 URL 반환
+            return safeFileName;
         }
 
         private async Task<string> GetUniqueFileNameAsync(string originalName)

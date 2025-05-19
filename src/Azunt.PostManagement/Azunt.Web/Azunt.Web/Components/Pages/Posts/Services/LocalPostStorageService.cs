@@ -9,13 +9,17 @@ namespace Azunt.Web.Components.Pages.Posts.Services
 {
     public class LocalPostStorageService : IPostStorageService
     {
+        private readonly string _container = "files";           // Root container 디렉터리
+        private readonly string _subFolder;                     // 실제 서브 폴더
         private readonly string _rootPath;
         private readonly ILogger<LocalPostStorageService> _logger;
 
-        public LocalPostStorageService(IWebHostEnvironment env, ILogger<LocalPostStorageService> logger)
+        public LocalPostStorageService(IWebHostEnvironment env, ILogger<LocalPostStorageService> logger, string subFolder = "posts")
         {
             _logger = logger;
-            _rootPath = Path.Combine(env.WebRootPath, "files", "posts");
+            _subFolder = subFolder;
+
+            _rootPath = Path.Combine(env.WebRootPath, _container, _subFolder);
 
             if (!Directory.Exists(_rootPath))
             {
@@ -34,23 +38,7 @@ namespace Azunt.Web.Components.Pages.Posts.Services
             }
 
             // 웹 접근 가능한 상대 경로 반환
-            return $"/files/posts/{safeFileName}";
-        }
-
-        private string GetUniqueFileName(string originalName)
-        {
-            string baseName = Path.GetFileNameWithoutExtension(originalName);
-            string extension = Path.GetExtension(originalName);
-            string newFileName = originalName;
-            int count = 1;
-
-            while (File.Exists(Path.Combine(_rootPath, newFileName)))
-            {
-                newFileName = $"{baseName}({count}){extension}";
-                count++;
-            }
-
-            return newFileName;
+            return $"/{_container}/{_subFolder}/{safeFileName}";
         }
 
         public Task<Stream> DownloadAsync(string fileName)
@@ -74,6 +62,22 @@ namespace Azunt.Web.Components.Pages.Posts.Services
             }
 
             return Task.CompletedTask;
+        }
+
+        private string GetUniqueFileName(string originalName)
+        {
+            string baseName = Path.GetFileNameWithoutExtension(originalName);
+            string extension = Path.GetExtension(originalName);
+            string newFileName = originalName;
+            int count = 1;
+
+            while (File.Exists(Path.Combine(_rootPath, newFileName)))
+            {
+                newFileName = $"{baseName}({count}){extension}";
+                count++;
+            }
+
+            return newFileName;
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿namespace Azunt.PostManagement
+﻿using Azunt.Storage;
+
+namespace Azunt.PostManagement
 {
-    public interface IPostStorageService
+    public interface IPostStorageService : IStorageService
     {
-        Task<string> UploadAsync(Stream stream, string fileName);
-        Task<Stream> DownloadAsync(string fileName);
-        Task DeleteAsync(string fileName);
+        // Empty
     }
 }

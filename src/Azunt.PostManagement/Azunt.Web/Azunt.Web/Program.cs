@@ -46,7 +46,7 @@ var defaultConnStr = builder.Configuration.GetConnectionString("DefaultConnectio
 
 builder.Services.AddDependencyInjectionContainerForPostApp(defaultConnStr);
 builder.Services.AddTransient<PostDbContextFactory>();
-builder.Services.AddScoped<IPostStorageService, LocalPostStorageService>();
+builder.Services.AddScoped<IPostStorageService, AzureBlobStorageService>();
 
 var app = builder.Build();
 

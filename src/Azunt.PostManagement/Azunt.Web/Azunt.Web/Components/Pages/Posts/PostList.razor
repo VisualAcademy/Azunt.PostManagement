@@ -72,7 +72,7 @@
                                     <td class="text-center text-nowrap">
                                         @if (!string.IsNullOrEmpty(m.FileName))
                                         {
-                                            <a href="@($"/api/PostFile/{System.Net.WebUtility.UrlEncode(m.FileName)}")" target="_blank">
+                                            <a href="@($"/api/PostFile/{Uri.EscapeDataString(m.FileName)}")" target="_blank">
                                                 <span class="oi oi-data-transfer-download me-1 text-primary"></span>
                                             </a>
                                         }

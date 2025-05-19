@@ -35,13 +35,10 @@ namespace Azunt.Web.Components.Pages.Posts.Services
             string safeFileName = await GetUniqueFileNameAsync(fileName);
             string blobPath = $"{_subFolder}/{safeFileName}";
 
-            // URL 인코딩
-            string encodedBlobPath = WebUtility.UrlEncode(blobPath);
-
-            var blobClient = _containerClient.GetBlobClient(encodedBlobPath);
+            var blobClient = _containerClient.GetBlobClient(blobPath);
             await blobClient.UploadAsync(stream, overwrite: true);
 
-            return blobClient.Uri.ToString(); // 전체 URL 반환
+            return safeFileName; // blobClient.Uri.ToString(); // 전체 URL 반환
         }
 
         private async Task<string> GetUniqueFileNameAsync(string originalName)
@@ -51,7 +48,7 @@ namespace Azunt.Web.Components.Pages.Posts.Services
             string newFileName = originalName;
             int count = 1;
 
-            while (await _containerClient.GetBlobClient(WebUtility.UrlEncode($"{_subFolder}/{newFileName}")).ExistsAsync())
+            while (await _containerClient.GetBlobClient($"{_subFolder}/{newFileName}").ExistsAsync())
             {
                 newFileName = $"{baseName}({count}){extension}";
                 count++;
@@ -66,9 +63,8 @@ namespace Azunt.Web.Components.Pages.Posts.Services
                 throw new ArgumentException("File name cannot be empty.", nameof(fileName));
 
             string blobPath = $"{_subFolder}/{fileName}";
-            string decodedPath = WebUtility.UrlDecode(blobPath);
 
-            var blobClient = _containerClient.GetBlobClient(decodedPath);
+            var blobClient = _containerClient.GetBlobClient(blobPath);
 
             if (!await blobClient.ExistsAsync())
                 throw new FileNotFoundException($"Post file not found: {fileName}");

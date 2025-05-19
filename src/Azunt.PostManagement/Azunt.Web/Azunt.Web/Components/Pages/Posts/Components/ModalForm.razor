@@ -24,7 +24,7 @@
                             <Microsoft.AspNetCore.Components.Forms.InputFile OnChange="HandlePostChange" class="form-control" />
                             @if (!string.IsNullOrEmpty(ModelEdit.FileName))
                             {
-                                <div class="form-text mt-1">📎 Selected: <strong>@ModelEdit.FileName</strong></div>
+                                <div class="form-text mt-1">📎 Selected: <strong>@System.Net.WebUtility.UrlDecode(ModelEdit.FileName)</strong></div>
                             }
                         </div>
 

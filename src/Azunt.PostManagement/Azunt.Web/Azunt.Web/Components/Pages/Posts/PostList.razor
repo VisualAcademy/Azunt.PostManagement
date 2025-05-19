@@ -36,7 +36,7 @@
                     </colgroup>
                     <thead class="thead-light">
                         <tr>
-                            <th class="text-center text-nowrap" @onclick="SortByName" style="cursor: pointer;">
+                            <th class="text-center text-nowrap" @onclick="@(() => SortBy("Name"))" style="cursor: pointer;">
                                 Name <Azunt.Components.Sorting.SortOrderArrow SortColumn="Name" SortOrder="@sortOrder" />
                             </th>
 

@@ -40,7 +40,7 @@ namespace Azunt.PostManagement
         /// <summary>
         /// 포스트 이름
         /// </summary>
-        [Required(ErrorMessage = "Name is required.")]
+        //[Required(ErrorMessage = "Name is required.")]
         [StringLength(255, ErrorMessage = "Name cannot exceed 255 characters.")]
         public string? Name { get; set; }
 

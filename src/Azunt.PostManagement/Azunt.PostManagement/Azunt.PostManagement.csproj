@@ -23,7 +23,11 @@
         <RepositoryType>git</RepositoryType>
 
         <!-- 저작권 정보 -->
-        <Copyright>© 2025 Hawaso. All rights reserved.</Copyright>
+        <Copyright>© 2026 Hawaso. All rights reserved.</Copyright>
+
+        <!-- README 및 License 파일 지정 -->
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -34,6 +38,10 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.1" />
         <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
+
+        <!-- 솔루션 루트의 파일을 NuGet에 포함 -->
+        <None Include="..\..\..\README.md" Pack="true" PackagePath="" />
+        <None Include="..\..\..\LICENSE" Pack="true" PackagePath="" />
     </ItemGroup>
 
 </Project>
